@@ -145,7 +145,6 @@
         
         #preset-buttons-container {
             display: grid;
-            /* **تغییر: تبدیل شبکه به ۳ ستون برای تقارن** */
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 25px;
@@ -333,7 +332,6 @@
                 mainScreen.classList.remove('hidden');
                 mainScreen.classList.add('is-fading-in');
                 clearForNextStudent();
-                //deductionInput.focus();
                 setTimeout(() => {
                      mainScreen.classList.remove('is-fading-in');
                 }, 400);
@@ -439,7 +437,6 @@
             deductions = [];
             updateDeductionsDisplay();
             updateScoreDisplay(0);
-            //deductionInput.focus();
         }
         
         function setGTheme(theme) {
