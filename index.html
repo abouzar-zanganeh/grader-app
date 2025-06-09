@@ -73,11 +73,6 @@
             line-height: 1.7;
             transition: background-color 0.3s, color 0.3s;
         }
-        
-        html {
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
 
         .container {
             background-color: var(--container-bg-color);
@@ -111,11 +106,7 @@
 
         h1, h2 { margin-top: 0; }
         
-        .input-group { 
-            margin-bottom: 20px; 
-            text-align: right; 
-            transition: opacity 0.2s ease-in-out;
-        }
+        .input-group { margin-bottom: 20px; text-align: right; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--secondary-text-color); }
         .input-group input {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-color);
@@ -154,22 +145,16 @@
         
         #preset-buttons-container {
             display: grid;
+            /* **تغییر: تبدیل شبکه به ۳ ستون برای تقارن** */
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 25px;
-            transition: opacity 0.2s ease-in-out;
         }
-        /* کلاس جدید برای غیرفعال کردن کنترل‌ها در حین انیمیشن */
-        .controls-disabled {
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
         .preset-btn {
             background-color: var(--preset-btn-bg);
             color: var(--text-color);
-            padding: 14px 5px;
-            font-size: 18px;
+            padding: 10px 5px;
+            font-size: 16px;
             font-weight: 700;
             border: 1px solid var(--border-color);
         }
@@ -235,7 +220,6 @@
             pointer-events: none;
             transition: all 0.6s cubic-bezier(0.5, -0.2, 0.5, 1.2);
         }
-
     </style>
 </head>
 <body>
@@ -299,9 +283,6 @@
         let totalScore = 0;
         let deductions = [];
         let lastEnterPressTime = 0; 
-        // متغیر جدید برای قفل کردن انیمیشن
-        let isAnimating = false;
-
         const setupScreen = document.getElementById('setupScreen');
         const mainScreen = document.getElementById('mainScreen');
         const totalScoreInput = document.getElementById('totalScoreInput');
@@ -352,6 +333,7 @@
                 mainScreen.classList.remove('hidden');
                 mainScreen.classList.add('is-fading-in');
                 clearForNextStudent();
+                deductionInput.focus();
                 setTimeout(() => {
                      mainScreen.classList.remove('is-fading-in');
                 }, 400);
@@ -375,15 +357,6 @@
         }
 
         function addDeductionAndAnimate(numericValue, sourceElement) {
-            // اگر انیمیشنی در حال اجراست، عملیات جدید را نادیده بگیر
-            if (isAnimating) return;
-            isAnimating = true; // قفل کردن کنترل‌ها
-
-            // غیرفعال کردن بصری کنترل‌ها
-            presetButtonsContainer.classList.add('controls-disabled');
-            deductionInput.parentElement.classList.add('controls-disabled');
-
-
             deductions.unshift(numericValue);
             updateDeductionsDisplay(0);
             calculateAndDisplayFinalScore();
@@ -391,12 +364,7 @@
             requestAnimationFrame(() => {
                 const sourceRect = sourceElement.getBoundingClientRect();
                 const placeholderLi = deductionsList.querySelector('.placeholder-li');
-                if (!placeholderLi) {
-                    isAnimating = false; // باز کردن قفل در صورت بروز خطا
-                    presetButtonsContainer.classList.remove('controls-disabled');
-                    deductionInput.parentElement.classList.remove('controls-disabled');
-                    return;
-                };
+                if (!placeholderLi) return;
                 const targetRect = placeholderLi.getBoundingClientRect();
 
                 const flyingEl = document.createElement('div');
@@ -415,12 +383,6 @@
                 setTimeout(() => {
                     flyingEl.remove();
                     placeholderLi.classList.add('revealed');
-                    
-                    // باز کردن قفل و فعال کردن مجدد کنترل‌ها
-                    isAnimating = false;
-                    presetButtonsContainer.classList.remove('controls-disabled');
-                    deductionInput.parentElement.classList.remove('controls-disabled');
-
                 }, 600);
             });
         }
@@ -477,6 +439,7 @@
             deductions = [];
             updateDeductionsDisplay();
             updateScoreDisplay(0);
+            deductionInput.focus();
         }
         
         function setGTheme(theme) {
