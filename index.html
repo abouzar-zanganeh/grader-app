@@ -1,4 +1,11 @@
-<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>اپلیکیشن محاسبه نمره (نسخه نهایی)</title><style>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اپلیکیشن محاسبه نمره (نسخه نهایی)</title>
+
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
 
         :root {
@@ -34,10 +41,6 @@
             --preset-btn-bg: #343a40;
             --preset-btn-hover-bg: #495057;
         }
-		html {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
 
         @keyframes pulse-effect {
           0% { transform: scale(1); }
@@ -64,18 +67,25 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 0; /* در حالت موبایل پدینگ کلی نداریم */
-            min-height: 100svh;
+            padding: 5vh 20px;
+            min-height: 100vh;
             margin: 0;
             line-height: 1.7;
             transition: background-color 0.3s, color 0.3s;
         }
+        
+        html {
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
 
-        /* استایل‌های پیش‌فرض برای موبایل (تمام-عرض) */
         .container {
             background-color: var(--container-bg-color);
-            padding: 30px 20px;
+            padding: 30px 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px var(--shadow-color);
             width: 100%;
+            max-width: 500px;
             text-align: center;
             transition: background-color 0.3s;
             position: relative;
@@ -101,7 +111,11 @@
 
         h1, h2 { margin-top: 0; }
         
-        .input-group { margin-bottom: 20px; text-align: right; }
+        .input-group { 
+            margin-bottom: 20px; 
+            text-align: right; 
+            transition: opacity 0.2s ease-in-out;
+        }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--secondary-text-color); }
         .input-group input {
             width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-color);
@@ -128,39 +142,34 @@
         #clearBtn { background-color: var(--secondary-text-color); }
         #clearBtn:hover { background-color: color-mix(in srgb, var(--secondary-text-color) 80%, black); }
         
-        /* **تغییر: بهینه‌سازی بخش نتیجه برای حالت موبایل** */
         .result-section {
-            background-color: var(--accent-bg-color);
-            border-radius: 8px;
-            padding: 10px 15px; /* پدینگ کمتر */
-            margin-bottom: 25px;
-            transition: background-color 0.3s;
-        }
-        .result-section h2 {
-            font-size: 14px; /* فونت کوچکتر برای عنوان */
-            margin-bottom: 0;
+            background-color: var(--accent-bg-color); border-radius: 8px; padding: 20px;
+            margin-bottom: 25px; transition: background-color 0.3s;
         }
         #finalScoreDisplay {
-            font-size: 44px; /* فونت عدد همچنان بزرگ است */
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-top: 0;
-            transition: color 0.3s;
+            font-size: 48px; font-weight: 700; color: var(--primary-color);
+            margin-top: 10px; transition: color 0.3s;
         }
         #finalScoreDisplay.updated { animation: pulse-effect 0.3s ease-in-out; }
         
-        /* **تغییر: دکمه‌های بزرگتر برای موبایل** */
         #preset-buttons-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 25px;
+            transition: opacity 0.2s ease-in-out;
         }
+        /* کلاس جدید برای غیرفعال کردن کنترل‌ها در حین انیمیشن */
+        .controls-disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
         .preset-btn {
             background-color: var(--preset-btn-bg);
             color: var(--text-color);
-            padding: 14px 5px; /* پدینگ بیشتر برای ارتفاع بزرگتر */
-            font-size: 18px; /* فونت بزرگتر */
+            padding: 14px 5px;
+            font-size: 18px;
             font-weight: 700;
             border: 1px solid var(--border-color);
         }
@@ -227,45 +236,72 @@
             transition: all 0.6s cubic-bezier(0.5, -0.2, 0.5, 1.2);
         }
 
-        /* **استایل‌های جدید برای دسکتاپ (طرح کارتی)** */
-        @media (min-width: 768px) {
-            body {
-                padding: 5vh 20px; /* بازگرداندن پدینگ در دسکتاپ */
-            }
-            .container {
-                max-width: 500px;
-                padding: 30px 35px;
-                border-radius: 12px;
-                box-shadow: 0 8px 25px var(--shadow-color);
-            }
-            .preset-btn {
-                padding: 10px 5px; /* بازگرداندن اندازه دکمه‌ها به حالت قبل */
-                font-size: 16px;
-            }
-            .result-section {
-                padding: 20px; /* بازگرداندن پدینگ بخش نتیجه */
-            }
-            .result-section h2 {
-                font-size: initial; /* بازگرداندن فونت عنوان به حالت پیش‌فرض */
-            }
-            #finalScoreDisplay {
-                 font-size: 48px; /* بازگرداندن فونت عدد به حالت قبل */
-                 margin-top: 10px;
-            }
-        }
+    </style>
+</head>
+<body>
 
-				</style></head><body><div class="container"><button id="theme-toggle" title="تغییر تم"><svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><div id="setupScreen"><h1>۱محاسبه‌گر نمره</h1><div class="input-group"><label for="totalScoreInput">امتحان از چند نمره است؟</label><input type="text" inputmode="decimal" id="totalScoreInput" placeholder="مثلاً: ۳۰">
-							</div><button id="startGradingBtn" class="button">شروع تصحیح</button></div><div id="mainScreen" class="hidden"><div class="result-section"><h2>نمره نهایی (از ۲۰)</h2><div id="finalScoreDisplay">۰</div></div><div id="preset-buttons-container"><button class="preset-btn" data-value="-1">۱</button><button class="preset-btn" data-value="-2">۲</button><button class="preset-btn" data-value="-3">۳</button><button class="preset-btn" data-value="-0.25">۰.۲۵</button><button class="preset-btn" data-value="-0.5">۰.۵</button><button class="preset-btn" data-value="-0.75">۰.۷۵</button></div><div class="input-group"><label for="deductionInput">یا مقدار دلخواه را وارد و Enter بزنید:</label><input type="text" id="deductionInput" placeholder="مقدار دلخواه...">
-								</div><div class="button-group"><button id="calculateBtn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+    <div class="container">
+        <button id="theme-toggle" title="تغییر تم">
+            <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <div id="setupScreen">
+            <h1>محاسبه‌گر نمره</h1>
+            <div class="input-group">
+                <label for="totalScoreInput">امتحان از چند نمره است؟</label>
+                <input type="text" inputmode="decimal" id="totalScoreInput" placeholder="مثلاً: ۳۰">
+            </div>
+            <button id="startGradingBtn" class="button">شروع تصحیح</button>
+        </div>
+
+        <div id="mainScreen" class="hidden">
+            <div class="result-section">
+                <h2>نمره نهایی (از ۲۰)</h2>
+                <div id="finalScoreDisplay">۰</div>
+            </div>
+            
+            <div id="preset-buttons-container">
+                <button class="preset-btn" data-value="-1">۱</button>
+                <button class="preset-btn" data-value="-2">۲</button>
+                <button class="preset-btn" data-value="-3">۳</button>
+                <button class="preset-btn" data-value="-0.25">۰.۲۵</button>
+                <button class="preset-btn" data-value="-0.5">۰.۵</button>
+                <button class="preset-btn" data-value="-0.75">۰.۷۵</button>
+            </div>
+
+            <div class="input-group">
+                <label for="deductionInput">یا مقدار دلخواه را وارد و Enter بزنید:</label>
+                <input type="text" id="deductionInput" placeholder="مقدار دلخواه...">
+            </div>
+            <div class="button-group">
+                <button id="calculateBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
                     محاسبه
-									</button><button id="clearBtn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                </button>
+                <button id="clearBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                     پاکسازی
-									</button></div><div id="deductionsListContainer"><strong>کسورات ثبت شده (برای حذف کلیک کنید):</strong><ul id="deductionsList"/></div><button id="newExamLink"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                </button>
+            </div>
+            <div id="deductionsListContainer">
+                <strong>کسورات ثبت شده (برای حذف کلیک کنید):</strong>
+                <ul id="deductionsList"></ul>
+            </div>
+            <button id="newExamLink">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
                 شروع امتحان جدید
-								</button></div></div><script>
+            </button>
+        </div>
+    </div>
+
+    <script>
         let totalScore = 0;
         let deductions = [];
         let lastEnterPressTime = 0; 
+        // متغیر جدید برای قفل کردن انیمیشن
+        let isAnimating = false;
+
         const setupScreen = document.getElementById('setupScreen');
         const mainScreen = document.getElementById('mainScreen');
         const totalScoreInput = document.getElementById('totalScoreInput');
@@ -287,13 +323,35 @@
         function toLatinDigits(str) {
             if (!str) return '';
             let result = str.toString();
-            for (let i = 0; i							< 10; i++) { result=result.replace(new RegExp(persianDigits[i],'g' ), latinDigits[i]); } return result; } function toPersianDigits(num) { if (num===null || num===undefined) return'' ; let result=num.toString(); for (let i=0; i < 10; i++) { result=result.replace(new RegExp(latinDigits[i],'g' ), persianDigits[i]); } return result; } function startGrading() { const score=parseFloat(toLatinDigits(totalScoreInput.value)); if (isNaN(score) || score <= 0) { alert("لطفاً یک نمره کل معتبر و بزرگتر از صفر وارد کنید."); return; } totalScore=score; setupScreen.classList.add('is-fading-out'); setTimeout(()=>{
+            for (let i = 0; i < 10; i++) {
+                result = result.replace(new RegExp(persianDigits[i], 'g'), latinDigits[i]);
+            }
+            return result;
+        }
+
+        function toPersianDigits(num) {
+            if (num === null || num === undefined) return '';
+            let result = num.toString();
+            for (let i = 0; i < 10; i++) {
+                 result = result.replace(new RegExp(latinDigits[i], 'g'), persianDigits[i]);
+            }
+            return result;
+        }
+
+        function startGrading() {
+            const score = parseFloat(toLatinDigits(totalScoreInput.value));
+            if (isNaN(score) || score <= 0) {
+                alert("لطفاً یک نمره کل معتبر و بزرگتر از صفر وارد کنید.");
+                return;
+            }
+            totalScore = score;
+            setupScreen.classList.add('is-fading-out');
+            setTimeout(() => {
                 setupScreen.classList.add('hidden');
                 setupScreen.classList.remove('is-fading-out');
                 mainScreen.classList.remove('hidden');
                 mainScreen.classList.add('is-fading-in');
                 clearForNextStudent();
-                //deductionInput.focus();
                 setTimeout(() => {
                      mainScreen.classList.remove('is-fading-in');
                 }, 400);
@@ -317,6 +375,15 @@
         }
 
         function addDeductionAndAnimate(numericValue, sourceElement) {
+            // اگر انیمیشنی در حال اجراست، عملیات جدید را نادیده بگیر
+            if (isAnimating) return;
+            isAnimating = true; // قفل کردن کنترل‌ها
+
+            // غیرفعال کردن بصری کنترل‌ها
+            presetButtonsContainer.classList.add('controls-disabled');
+            deductionInput.parentElement.classList.add('controls-disabled');
+
+
             deductions.unshift(numericValue);
             updateDeductionsDisplay(0);
             calculateAndDisplayFinalScore();
@@ -324,7 +391,12 @@
             requestAnimationFrame(() => {
                 const sourceRect = sourceElement.getBoundingClientRect();
                 const placeholderLi = deductionsList.querySelector('.placeholder-li');
-                if (!placeholderLi) return;
+                if (!placeholderLi) {
+                    isAnimating = false; // باز کردن قفل در صورت بروز خطا
+                    presetButtonsContainer.classList.remove('controls-disabled');
+                    deductionInput.parentElement.classList.remove('controls-disabled');
+                    return;
+                };
                 const targetRect = placeholderLi.getBoundingClientRect();
 
                 const flyingEl = document.createElement('div');
@@ -343,6 +415,12 @@
                 setTimeout(() => {
                     flyingEl.remove();
                     placeholderLi.classList.add('revealed');
+                    
+                    // باز کردن قفل و فعال کردن مجدد کنترل‌ها
+                    isAnimating = false;
+                    presetButtonsContainer.classList.remove('controls-disabled');
+                    deductionInput.parentElement.classList.remove('controls-disabled');
+
                 }, 600);
             });
         }
@@ -383,7 +461,11 @@
         }
         
         function calculateAndDisplayFinalScore() {
-            if (totalScore								<= 0){updateScoreDisplay("!"); return; } const sumOfDeductions=deductions.reduce((total, current)=>total + current, 0);
+            if (totalScore <= 0) {
+                updateScoreDisplay("!");
+                return;
+            }
+            const sumOfDeductions = deductions.reduce((total, current) => total + current, 0);
             const rawScore = totalScore - Math.abs(sumOfDeductions);
             const scaledScore = (rawScore / totalScore) * 20;
             const finalScore = Math.ceil(scaledScore);
@@ -395,7 +477,6 @@
             deductions = [];
             updateDeductionsDisplay();
             updateScoreDisplay(0);
-            //deductionInput.focus();
         }
         
         function setGTheme(theme) {
@@ -417,7 +498,40 @@
             if (event.key === 'Enter') {
                 event.preventDefault();
                 const now = new Date().getTime();
-                if (now - lastEnterPressTime									< 200){clearForNextStudent();lastEnterPressTime=0; return; } lastEnterPressTime=now; handleManualDeductionInput(); } }); presetButtonsContainer.addEventListener('click', function(event) { const button=event.target.closest('.preset-btn' ); if (button) { const value=parseFloat(button.dataset.value); addDeductionAndAnimate(value, button); } }); totalScoreInput.addEventListener('input', function() { const cursorPos=this.selectionStart; this.value=toPersianDigits(toLatinDigits(this.value)); this.setSelectionRange(cursorPos, cursorPos); }); deductionInput.addEventListener('input', function() { const cursorPos=this.selectionStart; this.value=toPersianDigits(toLatinDigits(this.value)); this.setSelectionRange(cursorPos, cursorPos); }); calculateBtn.addEventListener('click', calculateAndDisplayFinalScore); clearBtn.addEventListener('click', clearForNextStudent); newExamLink.addEventListener('click', goToSetupScreen); deductionsList.addEventListener('click', (event)=>{
+                if (now - lastEnterPressTime < 200) {
+                    clearForNextStudent();
+                    lastEnterPressTime = 0;
+                    return;
+                }
+                lastEnterPressTime = now;
+                handleManualDeductionInput();
+            }
+        });
+        
+        presetButtonsContainer.addEventListener('click', function(event) {
+            const button = event.target.closest('.preset-btn');
+            if (button) {
+                const value = parseFloat(button.dataset.value);
+                addDeductionAndAnimate(value, button);
+            }
+        });
+
+        totalScoreInput.addEventListener('input', function() {
+            const cursorPos = this.selectionStart;
+            this.value = toPersianDigits(toLatinDigits(this.value));
+            this.setSelectionRange(cursorPos, cursorPos);
+        });
+        deductionInput.addEventListener('input', function() {
+            const cursorPos = this.selectionStart;
+            this.value = toPersianDigits(toLatinDigits(this.value));
+            this.setSelectionRange(cursorPos, cursorPos);
+        });
+
+        calculateBtn.addEventListener('click', calculateAndDisplayFinalScore);
+        clearBtn.addEventListener('click', clearForNextStudent);
+        newExamLink.addEventListener('click', goToSetupScreen);
+
+        deductionsList.addEventListener('click', (event) => {
             if (event.target.tagName === 'LI') {
                 const clickedItem = event.target;
                 const indexToRemove = parseInt(clickedItem.dataset.index);
@@ -442,4 +556,7 @@
             setGTheme(savedTheme);
             setupScreen.classList.remove('hidden');
         });
-									</script></body></html>
+    </script>
+
+</body>
+</html>
