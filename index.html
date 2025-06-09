@@ -67,20 +67,18 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 5vh 20px;
+            padding: 0; /* در حالت موبایل پدینگ کلی نداریم */
             min-height: 100vh;
             margin: 0;
             line-height: 1.7;
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* استایل‌های پیش‌فرض برای موبایل (تمام-عرض) */
         .container {
             background-color: var(--container-bg-color);
-            padding: 30px 35px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px var(--shadow-color);
+            padding: 30px 20px;
             width: 100%;
-            max-width: 500px;
             text-align: center;
             transition: background-color 0.3s;
             position: relative;
@@ -133,19 +131,30 @@
         #clearBtn { background-color: var(--secondary-text-color); }
         #clearBtn:hover { background-color: color-mix(in srgb, var(--secondary-text-color) 80%, black); }
         
+        /* **تغییر: بهینه‌سازی بخش نتیجه برای حالت موبایل** */
         .result-section {
-            background-color: var(--accent-bg-color); border-radius: 8px; padding: 20px;
-            margin-bottom: 25px; transition: background-color 0.3s;
+            background-color: var(--accent-bg-color);
+            border-radius: 8px;
+            padding: 10px 15px; /* پدینگ کمتر */
+            margin-bottom: 25px;
+            transition: background-color 0.3s;
+        }
+        .result-section h2 {
+            font-size: 14px; /* فونت کوچکتر برای عنوان */
+            margin-bottom: 0;
         }
         #finalScoreDisplay {
-            font-size: 48px; font-weight: 700; color: var(--primary-color);
-            margin-top: 10px; transition: color 0.3s;
+            font-size: 44px; /* فونت عدد همچنان بزرگ است */
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 0;
+            transition: color 0.3s;
         }
         #finalScoreDisplay.updated { animation: pulse-effect 0.3s ease-in-out; }
         
+        /* **تغییر: دکمه‌های بزرگتر برای موبایل** */
         #preset-buttons-container {
             display: grid;
-            /* **تغییر: تبدیل شبکه به ۳ ستون برای تقارن** */
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 25px;
@@ -153,8 +162,8 @@
         .preset-btn {
             background-color: var(--preset-btn-bg);
             color: var(--text-color);
-            padding: 10px 5px;
-            font-size: 16px;
+            padding: 14px 5px; /* پدینگ بیشتر برای ارتفاع بزرگتر */
+            font-size: 18px; /* فونت بزرگتر */
             font-weight: 700;
             border: 1px solid var(--border-color);
         }
@@ -220,6 +229,34 @@
             pointer-events: none;
             transition: all 0.6s cubic-bezier(0.5, -0.2, 0.5, 1.2);
         }
+
+        /* **استایل‌های جدید برای دسکتاپ (طرح کارتی)** */
+        @media (min-width: 768px) {
+            body {
+                padding: 5vh 20px; /* بازگرداندن پدینگ در دسکتاپ */
+            }
+            .container {
+                max-width: 500px;
+                padding: 30px 35px;
+                border-radius: 12px;
+                box-shadow: 0 8px 25px var(--shadow-color);
+            }
+            .preset-btn {
+                padding: 10px 5px; /* بازگرداندن اندازه دکمه‌ها به حالت قبل */
+                font-size: 16px;
+            }
+            .result-section {
+                padding: 20px; /* بازگرداندن پدینگ بخش نتیجه */
+            }
+            .result-section h2 {
+                font-size: initial; /* بازگرداندن فونت عنوان به حالت پیش‌فرض */
+            }
+            #finalScoreDisplay {
+                 font-size: 48px; /* بازگرداندن فونت عدد به حالت قبل */
+                 margin-top: 10px;
+            }
+        }
+
     </style>
 </head>
 <body>
